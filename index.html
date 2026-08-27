@@ -1,4 +1,5 @@
 <title>Prefix Check</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Khmer:wght@500;600;700;800&display=swap">
 <style>
   /* Light only, on purpose — this page always looks the same regardless of
@@ -39,17 +40,52 @@
     font-family: "Manrope", system-ui, -apple-system, sans-serif;
     display: flex;
     justify-content: center;
-    padding: 48px 20px 64px;
+    align-items: flex-start;
+    padding: max(32px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 48px max(20px, env(safe-area-inset-left));
+  }
+
+  /* Tablets (iPad portrait and up): a bit more room to breathe, and the
+     card sits centered in the viewport instead of pinned to the top. */
+  @media (min-width: 700px) {
+    body {
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    main { max-width: 460px; gap: 22px; }
+
+    h1 { font-size: 25px; }
+
+    .sub { font-size: 15px; }
+
+    .card { padding: 26px; gap: 18px; }
+
+    .digit-slot { width: 58px; height: 66px; font-size: 28px; }
+
+    .key { padding: 16px 0; font-size: 18px; }
+
+    #back-btn svg { width: 28px; height: 28px; }
+  }
+
+  /* Large tablets / iPad landscape: a little more still, without letting
+     the card stretch into an ugly wide bar. */
+  @media (min-width: 1024px) {
+    main { max-width: 500px; }
+
+    .keypad { gap: 10px; }
   }
 
   body[lang="km"] {
     font-family: "Noto Sans Khmer", "Manrope", system-ui, sans-serif;
   }
 
+  .topbar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .lang-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     appearance: none;
     border: none;
     background: var(--surface);
@@ -62,7 +98,7 @@
     cursor: pointer;
     box-shadow: var(--shadow);
     transition: transform 0.1s ease;
-    z-index: 10;
+    flex: none;
   }
 
   .lang-toggle:hover { transform: translateY(-1px); }
@@ -398,9 +434,11 @@
   }
 </style>
 
-<button class="lang-toggle" id="lang-toggle" type="button">ខ្មែរ</button>
-
 <main>
+  <div class="topbar">
+    <button class="lang-toggle" id="lang-toggle" type="button">ខ្មែរ</button>
+  </div>
+
   <header>
     <span class="eyebrow" id="t-eyebrow">Cambodia Mobile Network</span>
     <h1 id="t-title">Which carrier is this number?</h1>
@@ -412,7 +450,7 @@
       <span class="digit-slot" id="slot-0"></span>
       <span class="digit-slot" id="slot-1"></span>
       <span class="digit-slot" id="slot-2"></span>
-      <input id="num-input" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" />
+      <input id="num-input" inputmode="none" pattern="[0-9]*" maxlength="3" autocomplete="off" />
     </label>
 
     <div class="keypad" id="keypad" role="group" aria-label="Number pad">
